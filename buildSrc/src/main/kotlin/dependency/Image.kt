@@ -8,7 +8,5 @@ object Image {
      * Android that wraps media decoding, memory and disk caching, and resource pooling into
      * a simple and easy to use interface.
      */
-    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-
-    const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
+    const val glide = "com.github.skydoves:landscapist-glide:${Versions.glide}"
 }

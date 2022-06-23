@@ -58,4 +58,8 @@ abstract class BaseViewModel<T : BaseEvent, V : BaseViewState>(defaultViewState:
         Timber.d("Reduce $this")
     }
 
+    protected fun BaseEvent.logEvent() {
+        Timber.d("Event $this")
+    }
+
 }

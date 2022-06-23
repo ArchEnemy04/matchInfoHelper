@@ -52,6 +52,7 @@ dependencies {
     async()
     jetpack()
     retrofit()
+    imageLoading()
 }
 
 fun DependencyHandlerScope.core() {
@@ -59,6 +60,7 @@ fun DependencyHandlerScope.core() {
     implementation(Dependencies.other.ktxCore)
     implementation(Dependencies.other.appcompat)
     implementation(Dependencies.other.material)
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02")
 }
 
 fun DependencyHandlerScope.room() {
@@ -74,7 +76,6 @@ fun DependencyHandlerScope.di() {
 
 fun DependencyHandlerScope.imageLoading() {
     implementation(Dependencies.image.glide)
-    annotationProcessor(Dependencies.image.glideCompiler)
 }
 
 fun DependencyHandlerScope.async() {

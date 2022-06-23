@@ -6,9 +6,12 @@
       <module name="AlacrityBet.buildSrc" target="11" />
       <module name="AlacrityBet.data" target="11" />
       <module name="MatchInfoHelper.app" target="11" />
+      <module name="matchInfoHelper.buildSrc" target="11" />
       <module name="MatchInfoHelper.buildSrc" target="11" />
+      <module name="matchInfoHelper.buildSrc.main" target="11" />
       <module name="MatchInfoHelper.buildSrc.main" target="11" />
       <module name="MatchInfoHelper.buildSrc.test" target="11" />
+      <module name="matchInfoHelper.buildSrc.test" target="11" />
       <module name="MatchInfoHelper.data" target="11" />
       <module name="Music.app" target="11" />
       <module name="Music.buildSrc" target="11" />

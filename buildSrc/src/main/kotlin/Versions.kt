@@ -32,7 +32,7 @@ object Versions {
     const val room = "2.4.2"
 
     // other
-    const val glide = "4.13.2"
+    const val glide = "1.5.2"
 
     /**
      * kotlinCompilerExtension NEEDS TO BE CHANGED WITH KOTLIN VERSION EVERY TIME

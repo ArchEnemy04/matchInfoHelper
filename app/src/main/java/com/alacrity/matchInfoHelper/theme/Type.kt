@@ -14,11 +14,6 @@ private val Montserrat = FontFamily(
     Font(R.font.montserrat_semibold, FontWeight.W600)
 )
 
-private val Domine = FontFamily(
-    Font(R.font.domine_regular),
-    Font(R.font.domine_bold, FontWeight.Bold)
-)
-
 val MusicTypography = Typography(
     defaultFontFamily = Montserrat,
     h1 = TextStyle(
@@ -26,4 +21,10 @@ val MusicTypography = Typography(
         fontSize = 14.sp,
         letterSpacing = 0.sp
     ),
+    h2 = TextStyle(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        letterSpacing = 0.sp
+    ),
 )
+
