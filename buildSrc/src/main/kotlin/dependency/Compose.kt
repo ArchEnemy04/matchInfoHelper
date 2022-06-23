@@ -11,6 +11,5 @@ object Compose {
     const val animation = "androidx.compose.animation:animation:${Versions.compose}"
     const val activity = "androidx.activity:activity-compose:${Versions.composeActivity}"
     const val navigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
-    const val insets = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
     const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanist}"
     }

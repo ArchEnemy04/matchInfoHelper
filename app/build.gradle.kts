@@ -9,7 +9,7 @@ android {
     buildToolsVersion = Dependencies.android.buildTools
 
     defaultConfig {
-        applicationId = "com.alacrity.music"
+        applicationId = "com.alacrity.matchInfoHelper"
         minSdk = Android.minSdk
         targetSdk = Android.targetSdk
         versionCode = 1
@@ -33,7 +33,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0"
+        kotlinCompilerExtensionVersion = Versions.kotlinCompilerExt
     }
 
     compileOptions {
@@ -51,6 +51,7 @@ dependencies {
     room()
     async()
     jetpack()
+    retrofit()
 }
 
 fun DependencyHandlerScope.core() {
@@ -79,6 +80,7 @@ fun DependencyHandlerScope.imageLoading() {
 fun DependencyHandlerScope.async() {
     implementation(Dependencies.async.coroutinesCore)
     implementation(Dependencies.async.coroutinesAndroid)
+    implementation(Dependencies.other.okHttp)
 }
 
 fun DependencyHandlerScope.log() {
@@ -97,7 +99,13 @@ fun DependencyHandlerScope.jetpack() {
     implementation(Dependencies.compose.animation)
     implementation(Dependencies.compose.activity)
     implementation(Dependencies.compose.navigation)
-    implementation(Dependencies.compose.insets)
     implementation(Dependencies.compose.uiController)
+}
+
+fun DependencyHandlerScope.retrofit() {
+    implementation(Dependencies.retrofit.retrofit)
+    implementation(Dependencies.retrofit.gson)
+    implementation(Dependencies.retrofit.gsonConverter)
+    // implementation(Dependencies.retrofit.retrofit)
 }
 

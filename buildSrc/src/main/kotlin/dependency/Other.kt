@@ -20,4 +20,6 @@ object Other {
 
     const val material = "com.google.android.material:material:${Versions.material}"
 
+    const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
+
 }
