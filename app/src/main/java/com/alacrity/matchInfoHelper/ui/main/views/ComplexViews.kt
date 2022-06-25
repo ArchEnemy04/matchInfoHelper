@@ -14,12 +14,10 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.alacrity.matchInfoHelper.entity.Handicap
 import com.alacrity.matchInfoHelper.entity.MatchInfo
-import com.alacrity.matchInfoHelper.theme.Purple
+import com.alacrity.matchInfoHelper.theme.Red
 import com.alacrity.matchInfoHelper.theme.SlightlyGray
 import com.alacrity.matchInfoHelper.util.getScreenSize
 import com.skydoves.landscapist.glide.GlideImage
@@ -39,19 +37,23 @@ fun ScreenWithItems(list: List<MatchInfo>, onClick: (MatchInfo) -> Unit) {
 }
 
 @Composable
-fun DetailMatchScreen(info: MatchInfo) {
-    val contentHeight = getScreenSize<Float>().second * 0.8
-    val adHeight = getScreenSize<Float>().second * 0.2
-    Column(modifier = Modifier.fillMaxSize().height(contentHeight.dp)) {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+fun DetailMatchScreen(info: MatchInfo, onShowOddsClick: (MatchInfo) -> Unit) {
+    val contentHeight = getScreenSize<Int>().second * 0.88f
+    val adHeight = getScreenSize<Int>().second * 0.12
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier
+            .fillMaxWidth()
+            .height(contentHeight.dp)) {
             items(1) {
                 Header(matchInfo = info)
                 Analytics(matchInfo = info)
-                OddsTab(matchInfo = info)
+                OddsButton(onClick = { onShowOddsClick(info) })
                 HandicapTab(matchInfo = info)
             }
         }
-        AdvertisementTab(modifier = Modifier.height(adHeight.dp))
+        AdvertisementTab(modifier = Modifier
+            .height(adHeight.dp)
+            .fillMaxWidth())
     }
 }
 
@@ -141,15 +143,15 @@ fun ProsAndConsCard(matchInfo: MatchInfo, teamFirst: Boolean, modifier: Modifier
         backgroundColor = SlightlyGray
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
-            SmallTextView(text = team)
-            SmallTextView(text = "PROS/CONS")
-            SmallTextView(text = "This speaks in favor of $team...")
+            SmallTextView(text = team, modifier = Modifier.padding(5.dp))
+            SmallTextView(text = "PROS/CONS", modifier = Modifier.padding(5.dp))
+            SmallTextView(text = "This speaks in favor of $team...", modifier = Modifier.padding(5.dp))
             pros.forEach {
-                SmallTextView(text = it)
+                SmallTextView(text = it, modifier = Modifier.padding(5.dp))
             }
-            SmallTextView(text = "This speaks against $team...")
+            SmallTextView(text = "This speaks against $team...", modifier = Modifier.padding(5.dp))
             cons.forEach {
-                SmallTextView(text = it)
+                SmallTextView(text = it, modifier = Modifier.padding(5.dp))
             }
         }
     }
@@ -177,46 +179,18 @@ fun InfoView(matchInfo: MatchInfo, modifier: Modifier) {
     }
 }
 
-@Composable
-fun OddsTab(matchInfo: MatchInfo) {
-    Card(
-        modifier = Modifier.padding(5.dp),
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = SlightlyGray
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ) {
-            Text(
-                text = "${matchInfo.team1} vs ${matchInfo.team2} odds",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            /*OddsTableView(
-                team1 = matchInfo.team1,
-                team2 = matchInfo.team2,
-                column1 = matchInfo.odds.bookMaker,
-                column2 = matchInfo.odds.team1Odds,
-                column3 = matchInfo.odds.team2Odds
-            )*/
-        }
-    }
-}
+
 
 @Composable
 fun AdvertisementTab(modifier: Modifier) {
     Card(
-        modifier = modifier
-            .padding(5.dp)
-            .height(100.dp),
+        modifier = modifier.padding(5.dp),
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = Purple,
+        backgroundColor = Red,
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Center) {
             Text(
-                "Тут будет ваша реклама",
+                "Тут буде ваша реклама",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
@@ -236,9 +210,17 @@ fun HandicapTab(matchInfo: MatchInfo) {
     }
 }
 
-
 @Composable
-fun SmallTextView(text: String) {
-    Text(text = text, fontSize = 14.sp)
+fun OddsTab(matchInfo: MatchInfo) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        OddsTableView(
+           team1 = matchInfo.team1,
+           team2 = matchInfo.team2,
+           column1 = matchInfo.odds.bookMaker,
+           column2 = matchInfo.odds.team1Odds,
+           column3 = matchInfo.odds.team2Odds
+       )
+    }
 }
+
 

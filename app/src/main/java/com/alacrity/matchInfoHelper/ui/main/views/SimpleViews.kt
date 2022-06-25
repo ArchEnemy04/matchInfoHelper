@@ -32,6 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.alacrity.matchInfoHelper.R
 import com.alacrity.matchInfoHelper.entity.MapHandicap
 import com.alacrity.matchInfoHelper.entity.MatchInfo
+import com.alacrity.matchInfoHelper.theme.Gray2
 import com.alacrity.matchInfoHelper.theme.MusicTypography
 import com.alacrity.matchInfoHelper.theme.Purple
 import com.alacrity.matchInfoHelper.theme.SlightlyGray
@@ -150,8 +151,8 @@ fun HandicapCard(matchInfo: MatchInfo, teamFirst: Boolean, modifier: Modifier) {
             Text(text = team, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
             stats.forEach { (k, v) ->
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = SpaceBetween) {
-                    Text(text = k)
-                    Text(text = v)
+                    Text(text = k, textAlign = TextAlign.Center, modifier = Modifier.padding(10.dp))
+                    Text(text = v, textAlign = TextAlign.Center, modifier = Modifier.padding(10.dp))
                 }
             }
         }
@@ -178,45 +179,64 @@ fun MapHandicapCard(matchInfo: MatchInfo, teamFirst: Boolean, modifier: Modifier
         shape = RoundedCornerShape(20.dp),
         backgroundColor = SlightlyGray,
     ) {
-        Text(
-            text = "$team Map Handicap",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        OverallDataTab(mapHandicap.avgRoundWonInLosses, mapHandicap.avgRoundLostInWins)
-        MapDataTab(mapHandicap)
+        Column {
+            Text(
+                text = "$team Map Handicap",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            )
+            OverallDataTab(mapHandicap.avgRoundWonInLosses, mapHandicap.avgRoundLostInWins)
+            MapDataTab(mapHandicap)
+        }
     }
 }
 
 @Composable
 fun OverallDataTab(avgInWins: Double, avgInLost: Double) {
     Card(
-        modifier = Modifier
-            .padding(5.dp),
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = SlightlyGray
+        modifier = Modifier,
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = Gray2
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp), horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = avgInWins.toString(),
                     style = MusicTypography.h2,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 30.dp),
+                    textAlign = TextAlign.Center
                 )
-                Text(
+                SmallTextView(
                     text = "Avg. rounds lost in wins",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 30.dp),
+                    textAlign = TextAlign.Center
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = avgInLost.toString(),
                     style = MusicTypography.h2,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 30.dp),
+                    textAlign = TextAlign.Center
                 )
-                Text(
+                SmallTextView(
                     text = "Avg. rounds won in losses",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 30.dp),
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -225,5 +245,104 @@ fun OverallDataTab(avgInWins: Double, avgInLost: Double) {
 
 @Composable
 fun MapDataTab(mapHandicap: MapHandicap) {
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = Gray2,
+        modifier = Modifier.padding(top = 10.dp, bottom = 20.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row {
+                CenteredTextView(text = "Map", modifier = Modifier.weight(2f))
+                SmallTextView(
+                    text = "Avg. rounds lost in wins", modifier = Modifier
+                        .weight(1.4f)
+                        .padding(5.dp)
+                )
+                SmallTextView(
+                    text = "Avg. rounds won in losses", modifier = Modifier
+                        .weight(1.4f)
+                        .padding(5.dp)
+                )
+            }
+            Row {
+                CenteredTextView(
+                    text = mapHandicap.map1Info.mapName,
+                    modifier = Modifier.weight(2f)
+                )
+                CenteredTextView(
+                    text = mapHandicap.map1Info.avgRoundLostInWins.toString(),
+                    modifier = Modifier.weight(1.4f)
+                )
+                CenteredTextView(
+                    text = mapHandicap.map1Info.avgRoundWonInLosses.toString(),
+                    modifier = Modifier.weight(1.4f)
+                )
+            }
+            Row {
+                CenteredTextView(
+                    text = mapHandicap.map2Info.mapName,
+                    modifier = Modifier.weight(2f)
+                )
+                CenteredTextView(
+                    text = mapHandicap.map2Info.avgRoundLostInWins.toString(),
+                    modifier = Modifier.weight(1.4f)
+                )
+                CenteredTextView(
+                    text = mapHandicap.map2Info.avgRoundWonInLosses.toString(),
+                    modifier = Modifier.weight(1.4f)
+                )
+            }
+            Row {
+                CenteredTextView(
+                    text = mapHandicap.map3Info.mapName,
+                    modifier = Modifier.weight(2f)
+                )
+                CenteredTextView(
+                    text = mapHandicap.map3Info.avgRoundLostInWins.toString(),
+                    modifier = Modifier.weight(1.4f),
+                )
+                CenteredTextView(
+                    text = mapHandicap.map3Info.avgRoundWonInLosses.toString(),
+                    modifier = Modifier.weight(1.4f),
+                )
+            }
+        }
+    }
+}
 
+@Composable
+fun OddsButton(onClick: () -> Unit) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            Button(
+                onClick = { onClick() },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Purple),
+                shape = RoundedCornerShape(40),
+                modifier = Modifier.height(70.dp),
+            ) {
+                Text(
+                    text = "Show odds tab",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+    }
+}
+
+@Composable
+fun CenteredTextView(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        modifier = modifier.padding(5.dp),
+        textAlign = TextAlign.Center
+    )
+}
+
+
+@Composable
+fun SmallTextView(text: String, modifier: Modifier = Modifier, textAlign: TextAlign = TextAlign.Start) {
+    Text(text = text, fontSize = 14.sp, modifier = modifier, textAlign = textAlign)
 }

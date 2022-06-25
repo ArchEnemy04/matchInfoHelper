@@ -14,10 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.alacrity.matchInfoHelper.customShape
 import com.alacrity.matchInfoHelper.ui.main.MainViewModel
-import com.alacrity.matchInfoHelper.ui.main.models.checkNetwork
-import com.alacrity.matchInfoHelper.ui.main.models.enterScreen
-import com.alacrity.matchInfoHelper.ui.main.models.moveToMainPage
-import com.alacrity.matchInfoHelper.ui.main.models.moveToMatchDetails
+import com.alacrity.matchInfoHelper.ui.main.models.*
 import com.alacrity.matchInfoHelper.util.getScreenSize
 import com.alacrity.matchInfoHelper.view_states.MainViewState
 import timber.log.Timber
@@ -57,21 +54,31 @@ fun MainScreen(
                 NoNetworkView { viewModel.checkNetwork() }
             }
             is MainViewState.MatchDetails -> {
-                DetailMatchScreen((state as MainViewState.MatchDetails).info)
+                DetailMatchScreen((state as MainViewState.MatchDetails).info, onShowOddsClick = {
+                    viewModel.showOddsTab(it)
+                })
+            }
+            is MainViewState.OddsTab -> {
+                OddsTab((state as MainViewState.OddsTab).matchInfo)
             }
             else -> Unit
         }
 
-        val activity = (LocalContext.current as? Activity)
-
         BackHandler {
             Timber.d("onBackClicked, state: $state")
-            if (state is MainViewState.MatchDetails) {
-                Timber.d("onMoveToMain")
-                viewModel.moveToMainPage()
-            } else {
-                Timber.d("onBackPressed")
-                exitProcess(0)
+            when (state) {
+                is MainViewState.MatchDetails -> {
+                    Timber.d("onMoveToMain")
+                    viewModel.moveToMainPage()
+                }
+                is MainViewState.OddsTab -> {
+                    Timber.d("onMoveToMatchDetails")
+                    viewModel.moveToMatchDetails((state as MainViewState.OddsTab).matchInfo)
+                }
+                else -> {
+                    Timber.d("onBackPressed")
+                    exitProcess(0)
+                }
             }
         }
 

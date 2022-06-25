@@ -14,6 +14,8 @@ sealed class MainEvent : BaseEvent {
 
     data class EnterMatchDetails(val matchInfo: MatchInfo) : MainEvent()
 
+    data class EnterOddsTab(val matchInfo: MatchInfo): MainEvent()
+
 }
 
 fun MainViewModel.moveToMainPage() {
@@ -30,4 +32,8 @@ fun MainViewModel.checkNetwork() {
 
 fun MainViewModel.moveToMatchDetails(matchInfo: MatchInfo) {
     obtainEvent(MainEvent.EnterMatchDetails(matchInfo))
+}
+
+fun MainViewModel.showOddsTab(matchInfo: MatchInfo) {
+    obtainEvent(MainEvent.EnterOddsTab(matchInfo))
 }

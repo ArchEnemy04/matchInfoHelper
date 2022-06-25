@@ -1,6 +1,5 @@
 package com.alacrity.matchInfoHelper.ui.main
 
-import androidx.lifecycle.viewModelScope
 import com.alacrity.matchInfoHelper.NetworkUtil
 import com.alacrity.matchInfoHelper.Repository
 import com.alacrity.matchInfoHelper.entity.MatchInfo
@@ -9,12 +8,7 @@ import com.alacrity.matchInfoHelper.util.BaseViewModel
 import com.alacrity.matchInfoHelper.view_states.MainViewState
 import com.alacrity.matchInfoHelper.view_states.MainViewState.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,20 +24,20 @@ class MainViewModel @Inject constructor(
     override fun obtainEvent(event: MainEvent) {
         when (val currentState = _viewState.value) {
             is Loading -> currentState.reduce(event)
-            is Error -> currentState.reduce()
+            is Error -> currentState.reduce(event)
             is FinishedLoading -> currentState.reduce(event)
-            is NoItems -> currentState.reduce()
-            is Refreshing -> currentState.reduce()
+            is NoItems -> currentState.reduce(event)
+            is Refreshing -> currentState.reduce(event)
             is NoNetworkConnection -> currentState.reduce(event)
             is MatchDetails -> currentState.reduce(event)
+            is OddsTab -> currentState.reduce(event)
         }
     }
 
     private fun Loading.reduce(event: MainEvent) {
-        logReduce()
+        logReduce(event)
         when (event) {
             MainEvent.EnterScreen -> {
-                event.logEvent()
                 checkNetworkAndChangeViewState()
                 subscribeToNetworkChanges()
             }
@@ -51,37 +45,35 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun Error.reduce() {
-        logReduce()
+    private fun Error.reduce(event: MainEvent) {
+        logReduce(event)
 
     }
 
     private fun FinishedLoading.reduce(event: MainEvent) {
-        logReduce()
+        logReduce(event)
         when (event) {
             is MainEvent.EnterMatchDetails -> {
-                event.logEvent()
                 _viewState.value = MatchDetails(event.matchInfo)
             }
             else -> Unit
         }
     }
 
-    private fun NoItems.reduce() {
-        logReduce()
+    private fun NoItems.reduce(event: MainEvent) {
+        logReduce(event)
 
     }
 
-    private fun Refreshing.reduce() {
-        logReduce()
+    private fun Refreshing.reduce(event: MainEvent) {
+        logReduce(event)
 
     }
 
     private fun NoNetworkConnection.reduce(event: MainEvent) {
-        logReduce()
+        logReduce(event)
         when (event) {
             is MainEvent.CheckNetwork -> {
-                event.logEvent()
                 checkNetworkAndChangeViewState()
             }
             else -> Unit
@@ -89,11 +81,23 @@ class MainViewModel @Inject constructor(
     }
 
     private fun MatchDetails.reduce(event: MainEvent) {
-        logReduce()
+        logReduce(event)
         when (event) {
             is MainEvent.MoveToMainPage -> {
-                event.logEvent()
                 _viewState.value = FinishedLoading(dataFlow)
+            }
+            is MainEvent.EnterOddsTab -> {
+                _viewState.value = OddsTab(event.matchInfo)
+            }
+            else -> Unit
+        }
+    }
+
+    private fun OddsTab.reduce(event: MainEvent) {
+        logReduce(event)
+        when (event) {
+            is MainEvent.EnterMatchDetails -> {
+                _viewState.value = MatchDetails(event.matchInfo)
             }
             else -> Unit
         }
