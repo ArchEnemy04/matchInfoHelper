@@ -4,6 +4,7 @@ import com.alacrity.matchInfoHelper.NetworkUtil
 import com.alacrity.matchInfoHelper.Repository
 import com.alacrity.matchInfoHelper.entity.MatchInfo
 import com.alacrity.matchInfoHelper.ui.main.models.MainEvent
+import com.alacrity.matchInfoHelper.use_cases.GetMatchesFromApiUseCase
 import com.alacrity.matchInfoHelper.util.BaseViewModel
 import com.alacrity.matchInfoHelper.view_states.MainViewState
 import com.alacrity.matchInfoHelper.view_states.MainViewState.*
@@ -13,7 +14,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val repository: Repository,
+    private val getMatchesFromApiUseCase: GetMatchesFromApiUseCase,
     private val networkUtil: NetworkUtil
 ) : BaseViewModel<MainEvent, MainViewState>(Loading) {
 
@@ -119,7 +120,7 @@ class MainViewModel @Inject constructor(
                 _viewState.value = Error(it)
             }
         ) {
-            repository.getData()
+            getMatchesFromApiUseCase()
         }
     }
 
